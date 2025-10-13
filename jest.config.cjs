@@ -1,31 +1,35 @@
-// jest.config.cjs (Sintaxe CommonJS)
+// jest.config.cjs (Updated for ts-jest compatibility)
 
 /** @type {import('jest').Config} */
 module.exports = {
-  // Este preset já configura o ts-jest para lidar com módulos ES
+  // Preset for ts-jest with ESM support
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'node',
-  
-  // Isto é essencial com ESM no Jest/ts-jest.
+
+  // Treat .ts files as ESM
   extensionsToTreatAsEsm: ['.ts'],
 
-  // Configuração específica para .ts, garantindo o uso do modo ESM
+  // Transform configuration for TypeScript files
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
       {
-        useESM: true, // 👈 Correto!
+        useESM: true, // Ensure ESM compatibility
       },
     ],
   },
 
-  // Mantém o moduleNameMapper para resolver problemas de importação de .js em caminhos relativos
+  // Resolve .js extensions in imports
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
 
-  // Adicionando suporte para arquivos TypeScript
-  transformIgnorePatterns: [
-    '<rootDir>/node_modules/'
-  ],
+  // Ignore transformations in node_modules
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+
+  // Explicitly match test files
+  testMatch: ['**/tests/**/*.test.ts'],
+
+  // Clear warnings about deprecated globals
+  globals: {},
 };

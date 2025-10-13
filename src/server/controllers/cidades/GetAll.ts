@@ -25,8 +25,15 @@ export const getAll = async (
   req: Request<{}, {}, {}, IQueryProps>,
   res: Response
 ) => {
-  console.log(req.query);
+  res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
+  res.setHeader("x-total-count", 1);
+  
+
   return res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .send("Não implementado!");
+    .status(StatusCodes.OK).json([
+      {
+        id: 1,
+        nome: "São Paulo",
+      },
+    ]);
 };

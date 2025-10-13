@@ -1,6 +1,5 @@
 import { StatusCodes } from "http-status-codes";
 import { testServer } from "../jest.setup.js";
-import e from "express";
 
 describe("Cidades - Delete", () => {
   it("Apaga registro de cidade", async () => {

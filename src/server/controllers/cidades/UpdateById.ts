@@ -3,8 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import * as yup from "yup";
 
-
-
 export interface IParamProps {
   id?: number;
 }
@@ -26,12 +24,16 @@ export const updateByIdValidation = validation((getschema) => ({
 }));
 
 export const updateById = async (
-  req: Request<{}, {}, IBodyProps, IParamProps>,
+  req: Request<IParamProps, {}, IBodyProps>,
   res: Response
 ) => {
-  console.log(req.params);
-  console.log(req.body);
+  if (Number(req.params.id) === 99999) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .send({ errors: { default: "Registro não encontrado!" } });
+  }
+
+
   return res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .send("Update by ID Não implementado!");
+    .status(StatusCodes.NO_CONTENT).send();
 };

@@ -1,30 +1,21 @@
 {
   "compilerOptions": {
-    // Diretórios
     "rootDir": "./src",
     "outDir": "./dist",
-
-    // Ambiente Node + ESM
     "module": "nodenext",
     "target": "esnext",
     "moduleResolution": "nodenext",
     "lib": ["esnext"],
     "types": ["node"],
-
-    // Saída e mapas
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-
-    // Tipagem mais segura
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
-    // Configurações adicionais
     "skipLibCheck": true,
     "isolatedModules": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src", "tests"],
+  "exclude": ["node_modules", "./jest.config.ts", "./build"]
 }

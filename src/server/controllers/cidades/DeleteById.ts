@@ -16,7 +16,7 @@ export const deleteByIdValidation = validation((getschema) => ({
 }));
 
 export const deleteById = async (
-  req: Request<{}, {}, {}, IParamProps>,
+  req: Request<IParamProps, {}, {}, {}>,
   res: Response
 ) => {
   if (Number(req.params.id) === 99999) {

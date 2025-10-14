@@ -1,3 +1,4 @@
+import "express";
 import { server } from "./server/server.js"; // Revertendo para incluir a extensão .js
 
 server.listen(process.env.PORT || 3333, () => {

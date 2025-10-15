@@ -1,14 +1,13 @@
 import { validation } from "../../shared/middlewares/Validation.js";
+import { ICidade } from "../../database/models/Cidade.js";
 import { StatusCodes } from "http-status-codes";
 import { RequestHandler } from "express";
 import * as yup from "yup";
-
-export interface ICidade {
-  nome: string;
-}
+ 
+export interface IBodyProps extends Omit<ICidade, "id"> {}
 
 export const createValidation = validation((getschema) => ({
-  body: getschema<ICidade>(
+  body: getschema<IBodyProps>(
     yup.object().shape({
       nome: yup.string().required().min(3).max(100),
     })

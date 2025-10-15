@@ -1,4 +1,5 @@
 import { validation } from "../../shared/middlewares/Validation.js";
+import { ICidade } from "../../database/models/Cidade.js";
 import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import * as yup from "yup";
@@ -6,9 +7,7 @@ import * as yup from "yup";
 export interface IParamProps {
   id?: number;
 }
-export interface IBodyProps {
-  nome: string;
-}
+export interface IBodyProps extends Omit<ICidade, "id"> {}
 
 export const updateByIdValidation = validation((getschema) => ({
   params: getschema<IParamProps>(

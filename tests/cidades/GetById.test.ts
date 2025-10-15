@@ -8,10 +8,10 @@ describe("Cidades - Get by id", () => {
     });
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 
-    const resBuscado = await testServer.get(`/cidades/${res1.body.id}`);
+    const resBuscado = await testServer.get(`/cidades/${res1.body}`);
     expect(resBuscado.statusCode).toEqual(StatusCodes.OK);
     expect(resBuscado.body).toEqual(expect.objectContaining({
-      id: res1.body.id,
+      id: res1.body,
       nome: "Cidade de Teste",
     }));
   });

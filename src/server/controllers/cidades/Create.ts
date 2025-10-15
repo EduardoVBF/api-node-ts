@@ -1,3 +1,4 @@
+import { CidadesProvider } from "../../database/providers/cidades/index.js";
 import { validation } from "../../shared/middlewares/Validation.js";
 import { ICidade } from "../../database/models/Cidade.js";
 import { StatusCodes } from "http-status-codes";
@@ -15,9 +16,15 @@ export const createValidation = validation((getschema) => ({
 }));
 
 export const create: RequestHandler = async (req, res) => {
-  
+  const result = await CidadesProvider.create(req.body);
 
-  return res.status(StatusCodes.CREATED).send({
-    id: 1,
-  });
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: result.message,
+      }
+    });
+  }
+
+  return res.status(StatusCodes.CREATED).json(result);
 };

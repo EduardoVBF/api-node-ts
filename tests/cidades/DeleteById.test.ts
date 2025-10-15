@@ -8,7 +8,7 @@ describe("Cidades - Delete", () => {
     });
     expect(teste1.statusCode).toEqual(StatusCodes.CREATED);
 
-    const testeApagar1 = await testServer.delete(`/cidades/${teste1.body.id}`).send();
+    const testeApagar1 = await testServer.delete(`/cidades/${teste1.body}`).send();
 
     expect(testeApagar1.statusCode).toEqual(StatusCodes.NO_CONTENT);
   });

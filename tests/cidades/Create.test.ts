@@ -8,7 +8,7 @@ describe("Cidades - Create", () => {
     });
 
     expect(teste1.statusCode).toEqual(StatusCodes.CREATED);
-    expect(typeof teste1.body).toEqual("object");
+    expect(typeof teste1.body).toEqual("number");
   });
   it("Tenta criar registro de cidade com nome curto", async () => {
     const teste1 = await testServer.post("/cidades").send({

@@ -9,7 +9,7 @@ describe("Cidades - Update by id", () => {
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 
     const resAtualizado = await testServer
-      .put(`/cidades/${res1.body.id}`)
+      .put(`/cidades/${res1.body}`)
       .send({
         nome: "Cidade de Teste Atualizada",
       });

@@ -3,9 +3,9 @@ import { ETableNames } from "../ETableNames.js";
 
 export async function up(knex: Knex) {
   return knex.schema
-    .createTable(ETableNames.cidade, (table) => {
+    .createTable(ETableNames.cidade, (table: Knex.CreateTableBuilder) => {
       table.bigIncrements("id").primary().index();
-      table.string("nome", 150).notNullable().index();
+      table.string("nome", 100).checkLength("<=", 100).notNullable().index();
 
       table.comment("Tabela de cidades");
     })

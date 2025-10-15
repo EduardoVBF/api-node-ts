@@ -4,7 +4,7 @@ import * as getbyid from "./GetById.js";
 import * as create from "./Create.js";
 import * as getall from "./GetAll.js";
 
-export const CidadeController = {
+export const CidadesController = {
   ...create,
   ...getall,
   ...getbyid,

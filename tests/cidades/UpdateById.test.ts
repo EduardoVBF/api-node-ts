@@ -5,7 +5,6 @@ describe("Cidades - Update by id", () => {
   it("Atualizar registro por id", async () => {
     const res1 = await testServer.post("/cidades").send({
       nome: "Cidade de Teste",
-      estado_id: 1,
     });
     expect(res1.statusCode).toEqual(StatusCodes.CREATED);
 

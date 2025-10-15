@@ -1,3 +1,4 @@
+import { CidadesProvider } from "../../database/providers/cidades/index.js";
 import { validation } from "../../shared/middlewares/Validation.js";
 import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
@@ -19,13 +20,19 @@ export const getById = async (
   req: Request<IParamProps, {}, {}, {}>,
   res: Response
 ) => {
-  if (Number(req.params.id) === 99999) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .send({ errors: { default: "Registro não encontrado!" } });
+  if (!req.params.id) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: { default: "O Id precisa ser informado!" },
+    });
   }
 
-  return res
-    .status(StatusCodes.OK)
-    .json({ id: Number(req.params.id), nome: "Cidade de Teste" });
+  const result = await CidadesProvider.getById(Number(req.params.id));
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: { default: result.message },
+    });
+  }
+
+  return res.status(StatusCodes.OK).json(result);
 };

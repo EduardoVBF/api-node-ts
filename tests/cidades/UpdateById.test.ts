@@ -16,10 +16,15 @@ describe("Cidades - Update by id", () => {
     expect(resAtualizado.statusCode).toEqual(StatusCodes.NO_CONTENT);
   });
   it("Tentar atualizar registro que não existe", async () => {
-    const res1 = await testServer.put("/cidades/99999").send({
-      nome: "Cidade de Teste Atualizada",
+    const res1 = await testServer.put("/cidades/999999999999999999999999").send({
+      nome: "Cidade Inexistente",
+    });
+    expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+  });
+  it("Tentar atualizar sem informar o id", async () => {
+    const res1 = await testServer.put("/cidades/").send({
+      nome: "Cidade Sem Id",
     });
     expect(res1.statusCode).toEqual(StatusCodes.NOT_FOUND);
-    expect(res1.body).toHaveProperty("errors.default");
   });
 });

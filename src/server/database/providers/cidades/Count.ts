@@ -1,17 +1,25 @@
 import { ETableNames } from "../../ETableNames.js";
 import { Knex } from "../../knex/index.js";
 
-export const count = async (filter: ''): Promise<number | Error> => {
+export const count = async (filter: string | null): Promise<number | Error> => {
   try {
-    const count = await Knex(ETableNames.cidade)
-      .where("nome", "like", `%${filter}%`)
-      .count<[{ count: number }]>("* as count");
+    const query = Knex(ETableNames.cidade);
 
-    if (Number.isInteger(Number(count))) return Number(count);
+    if (filter) {
+      query.where("nome", "like", `%${filter}%`);
+    }
+
+    const result = await query.count<{ count: number }[]>("* as count");
+
+    const count = result[0]?.count;
+
+    if (count !== undefined && Number.isInteger(count)) {
+      return count;
+    }
 
     return new Error("Erro ao contar registros");
   } catch (error) {
     console.error("Erro ao contar registros:", error);
     return new Error("Erro ao contar registros");
   }
-}; 
+};

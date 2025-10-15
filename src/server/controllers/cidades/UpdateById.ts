@@ -1,3 +1,4 @@
+import { CidadesProvider } from "../../database/providers/cidades/index.js";
 import { validation } from "../../shared/middlewares/Validation.js";
 import { ICidade } from "../../database/models/Cidade.js";
 import { StatusCodes } from "http-status-codes";
@@ -26,13 +27,19 @@ export const updateById = async (
   req: Request<IParamProps, {}, IBodyProps>,
   res: Response
 ) => {
-  if (Number(req.params.id) === 99999) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .send({ errors: { default: "Registro não encontrado!" } });
+  if (!req.params.id) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors: { default: "O Id precisa ser informado!" },
+    });
   }
 
+  const result = await CidadesProvider.updateById(req.params.id, req.body);
 
-  return res
-    .status(StatusCodes.NO_CONTENT).send();
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: { default: result.message },
+    });
+  }
+
+  return res.status(StatusCodes.NO_CONTENT).json(result);
 };

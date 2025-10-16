@@ -9,7 +9,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "postinstall": "tsc",
     "production": "node ./build/index.js",
-    "knex:rollback-all": "knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback --all",
+    "knex:rollback-all": "node --loader ts-node/esm ./node_modules/knex/bin/cli.js --knexfile ./src/server/database/knex/Environment.ts migrate:rollback --all",
     "knex:rollback": "node --loader ts-node/esm ./node_modules/knex/bin/cli.js --knexfile ./src/server/database/knex/Environment.ts migrate:rollback",
     "knex:migrate": "node --loader ts-node/esm ./node_modules/knex/bin/cli.js --knexfile ./src/server/database/knex/Environment.ts migrate:latest",
     "knex:seed": "node --loader ts-node/esm ./node_modules/knex/bin/cli.js --knexfile ./src/server/database/knex/Environment.ts seed:run"

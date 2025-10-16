@@ -4,6 +4,7 @@ import supertest from "supertest";
 
 beforeAll(async () => {
   await Knex.migrate.latest();
+  await Knex.seed.run();
 });
 
 afterAll(async () => {

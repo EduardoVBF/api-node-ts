@@ -1,16 +1,13 @@
 import { Knex } from "knex";
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const development: Knex.Config = {
+const baseConfig: Knex.Config = {
   client: "sqlite3",
   useNullAsDefault: true,
-  connection: {
-    filename: path.resolve(__dirname, "../../../../database.sqlite"),
-  },
   migrations: {
     directory: path.resolve(__dirname, "../migrations"),
   },
@@ -18,18 +15,34 @@ export const development: Knex.Config = {
     directory: path.resolve(__dirname, "../seeds"),
   },
   pool: {
-    afterCreate: (connection: import('sqlite3').Database, done: (err?: Error | null) => void) => {
+    afterCreate: (
+      connection: import("sqlite3").Database,
+      done: (err?: Error | null) => void
+    ) => {
       connection.run("PRAGMA foreign_keys = ON");
       done();
-    }
+    },
+  },
+};
+
+// 👇 Exporta configs diferentes para cada ambiente
+export const development: Knex.Config = {
+  ...baseConfig,
+  connection: {
+    filename: path.resolve(__dirname, "../../../../database.sqlite"),
   },
 };
 
 export const test: Knex.Config = {
-  ...development,
-  connection: ':memory:',
+  ...baseConfig,
+  connection: { filename: ":memory:" },
 };
 
+// 🚀 Produção (Vercel)
 export const production: Knex.Config = {
-  ...development,
+  ...baseConfig,
+  connection:
+    process.env.VERCEL_ENV === "production"
+      ? { filename: ":memory:" } // usa memória (temporário)
+      : { filename: path.resolve(__dirname, "../../../../database.sqlite") },
 };

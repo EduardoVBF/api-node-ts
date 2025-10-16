@@ -11,4 +11,4 @@ afterAll(async () => {
   await Knex.destroy();
 });
 
-export const testServer = supertest(server)
+export const testServer = supertest(server);

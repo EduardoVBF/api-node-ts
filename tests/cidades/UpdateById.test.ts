@@ -5,7 +5,7 @@ describe("Cidades - Update by id", () => {
   let accessToken = "";
 
   beforeAll(async () => {
-    const email = "create-usuario@gmail.com";
+    const email = "create-usuario-updateById@gmail.com";
 
     await testServer.post("/cadastrar").send({
       nome: "Create Usuario",

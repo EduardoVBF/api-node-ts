@@ -5,7 +5,7 @@ describe ("Cidades - GetAll", () => {
   let accessToken = "";
 
   beforeAll(async () => {
-    const email = "create-usuario@gmail.com";
+    const email = "create-usuario-getAll@gmail.com";
 
     await testServer.post("/cadastrar").send({
       nome: "Create Usuario",

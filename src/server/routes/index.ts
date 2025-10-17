@@ -1,5 +1,9 @@
 // import { StatusCodes } from "http-status-codes";
-import { CidadesController, PessoasController } from "../controllers/index.js";
+import {
+  CidadesController,
+  PessoasController,
+  UsuariosController,
+} from "../controllers/index.js";
 import { Router } from "express";
 
 const router = Router();
@@ -7,6 +11,18 @@ const router = Router();
 router.get("/", (req, res) => {
   return res.send("Fala Dev!");
 });
+
+//Rota de autenticação
+router.post(
+  "/cadastrar",
+  UsuariosController.signUpValidation,
+  UsuariosController.signUp
+);
+router.post(
+  "/entrar",
+  UsuariosController.signInValidation,
+  UsuariosController.signIn
+);
 
 //CRUD CIDADES
 router.post(

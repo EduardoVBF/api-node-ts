@@ -1,0 +1,43 @@
+import { UsuariosProvider } from "../../database/providers/usuarios/index.js";
+import { validation } from "../../shared/middlewares/Validation.js";
+import { IUsuario } from "../../database/models/Usuario.js";
+import { StatusCodes } from "http-status-codes";
+import { RequestHandler } from "express";
+import * as yup from "yup";
+
+export interface IBodyProps extends Omit<IUsuario, "id" | "nome"> {}
+
+export const signInValidation = validation((getschema) => ({
+  body: getschema<IBodyProps>(
+    yup.object().shape({
+      email: yup.string().required().email().min(5),
+      senha: yup.string().required().min(6),
+    })
+  ),
+}));
+
+export const signIn: RequestHandler = async (req, res) => {
+  const { email, senha } = req.body;
+
+  const result = await UsuariosProvider.getByEmail(email);
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      errors: {
+        default: "Email ou senha inválidos",
+      },
+    });
+  }
+
+  if (result.senha !== senha) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      errors: {
+        default: "Email ou senha inválidos",
+      },
+    });
+  } else {
+    return res.status(StatusCodes.OK).json({
+      accessToken: "teste.teste.teste",
+    });
+  }
+};

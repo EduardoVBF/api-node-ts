@@ -1,6 +1,5 @@
 import { StatusCodes } from "http-status-codes";
 import { testServer } from "../jest.setup.js";
-//
 
 describe("Pessoas - Update by id", () => {
   let accessToken = "";

@@ -1,4 +1,5 @@
 import { UsuariosProvider } from "../../database/providers/usuarios/index.js";
+import { PasswordCrypto } from "../../shared/services/PasswordCrypto.js";
 import { validation } from "../../shared/middlewares/Validation.js";
 import { IUsuario } from "../../database/models/Usuario.js";
 import { StatusCodes } from "http-status-codes";
@@ -29,7 +30,9 @@ export const signIn: RequestHandler = async (req, res) => {
     });
   }
 
-  if (result.senha !== senha) {
+  const passwordMatch = await PasswordCrypto.verifyPassword(senha, result.senha);
+
+  if (!passwordMatch) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: "Email ou senha inválidos",

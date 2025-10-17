@@ -1,6 +1,7 @@
 import { UsuariosProvider } from "../../database/providers/usuarios/index.js";
 import { PasswordCrypto } from "../../shared/services/PasswordCrypto.js";
 import { validation } from "../../shared/middlewares/Validation.js";
+import { JWTService } from "../../shared/services/JWTService.js";
 import { IUsuario } from "../../database/models/Usuario.js";
 import { StatusCodes } from "http-status-codes";
 import { RequestHandler } from "express";
@@ -20,9 +21,9 @@ export const signInValidation = validation((getschema) => ({
 export const signIn: RequestHandler = async (req, res) => {
   const { email, senha } = req.body;
 
-  const result = await UsuariosProvider.getByEmail(email);
+  const usuario = await UsuariosProvider.getByEmail(email);
 
-  if (result instanceof Error) {
+  if (usuario instanceof Error) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: "Email ou senha inválidos",
@@ -30,7 +31,7 @@ export const signIn: RequestHandler = async (req, res) => {
     });
   }
 
-  const passwordMatch = await PasswordCrypto.verifyPassword(senha, result.senha);
+  const passwordMatch = await PasswordCrypto.verifyPassword(senha, usuario.senha);
 
   if (!passwordMatch) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -39,8 +40,18 @@ export const signIn: RequestHandler = async (req, res) => {
       },
     });
   } else {
+    const accessToken = JWTService.signIn({ uid: usuario.id });
+
+    if (accessToken === "JWT_SECRET_NOT_FOUND") {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: {
+          default: "Erro ao gerar token de acesso",
+        },
+      });
+    }
+
     return res.status(StatusCodes.OK).json({
-      accessToken: "teste.teste.teste",
+      accessToken,
     });
   }
 };

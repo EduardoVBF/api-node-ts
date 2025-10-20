@@ -40,9 +40,19 @@ export const test: Knex.Config = {
 
 // 🚀 Produção (Vercel)
 export const production: Knex.Config = {
-  ...baseConfig,
-  connection:
-    process.env.VERCEL_ENV === "production"
-      ? { filename: ":memory:" } // usa memória (temporário)
-      : { filename: path.resolve(__dirname, "../../../../database.sqlite") },
+  client: "pg",
+  migrations: {
+    directory: path.resolve(__dirname, "../migrations"),
+  },
+  seeds: {
+    directory: path.resolve(__dirname, "../seeds"),
+  },
+  connection: {
+    host: process.env.DB_HOST ?? "",
+    user: process.env.DB_USER ?? "",
+    database: process.env.DB_NAME ?? "",
+    password: process.env.DB_PASSWORD ?? "",
+    port: Number(process.env.DB_PORT ?? "5432"),
+    ssl: { rejectUnauthorized: false },
+  }
 };

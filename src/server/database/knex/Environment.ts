@@ -48,10 +48,10 @@ export const production: Knex.Config = {
     directory: path.resolve(__dirname, "../seeds"),
   },
   connection: {
-    host: process.env.DB_HOST ?? "",
-    user: process.env.DB_USER ?? "",
-    database: process.env.DB_NAME ?? "",
-    password: process.env.DB_PASSWORD ?? "",
+    host: process.env.PGHOST ?? "",
+    user: process.env.PGUSER ?? "",
+    database: process.env.PGDATABASE ?? "",
+    password: process.env.PGPASSWORD ?? "",
     port: Number(process.env.DB_PORT ?? "5432"),
     ssl: { rejectUnauthorized: false },
   }

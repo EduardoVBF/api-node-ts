@@ -38,7 +38,7 @@ export const test: Knex.Config = {
   connection: { filename: ":memory:" },
 };
 
-// 🚀 Produção (Vercel)
+// 🚀 Produção (Vercel + Neon)
 export const production: Knex.Config = {
   client: "pg",
   migrations: {
